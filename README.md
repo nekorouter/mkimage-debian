@@ -11,7 +11,7 @@ mkimage-nvme.sh: Directly make a "u-boot ready" nvme disk for Unmatched
 
 mkimage-sdcard.sh: Make a image file with u-boot, suitable for sdcard
 
-mkimage-uboot.sh: Only burn u-boot on sdcard, if you only want boot from nvme disk
+mkimage-uboot.sh: Make a image file contains only uboot, write to sdcard if device path is given
 
 ## Image Making Steps
 1. Partition and format target disk (a EFI partition for future use and a root partition)
@@ -35,6 +35,21 @@ Patches: https://github.com/sifive/meta-sifive/tree/master/recipes-bsp/u-boot/fi
 
 >For sdcard + nvme disk: TODO (dd + mkimage-nvme.sh)
 
+### Flash U-Boot to SDCard
+
+```
+mkimage-uboot.sh -d [sdcard device (/dev/sdx)]
+```
+This will make a sdcard only contains opensbi and u-boot, suitable for boot form nvme case.
+
+### Flash U-Boot Unmatched onboard Flash
+
+```
+mkimage-uboot.sh -o [image_file_name]
+(boot into unmatched)
+dd if=[image_file_name] of=/dev/mtdblock0 conv=sync
+```
+
 ## Addtional
 >TODO (a hardware setup guide needed?)
 
@@ -44,5 +59,7 @@ Rootfs: ext4, must have ```legacy_boot``` flag set for extlinux boot
 EFI: vfat, must have ```boot,esp``` flag set for grub boot
 
 ## Similar Projects
+https://wiki.debian.org/InstallingDebianOn/SiFive/HiFiveUnmatched
+
 https://github.com/XYenChi/bootloader
 
