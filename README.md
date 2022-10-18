@@ -38,20 +38,32 @@ Patches: https://github.com/sifive/meta-sifive/tree/master/recipes-bsp/u-boot/fi
 ### Flash U-Boot to SDCard
 
 ```
-mkimage-uboot.sh -d [sdcard device (/dev/sdx)]
+sudo mkimage-uboot.sh -d [sdcard device (/dev/sdx)]
 ```
 This will make a sdcard only contains opensbi and u-boot, suitable for boot form nvme case.
 
 ### Flash U-Boot Unmatched onboard Flash
 
 ```
-mkimage-uboot.sh -o [image_file_name]
-(boot into unmatched)
-dd if=[image_file_name] of=/dev/mtdblock0 conv=sync
+sudo mkimage-uboot.sh -o [image_file_name]
+(copy output image file to unmatched)
+sudo modprobe mtdblock    # Load the MTD block driver
+sudo dd if=[image_file_name] of=/dev/mtdblock0 status=progress    # flash image to MTD device (SPI Flash)
 ```
+After this step, set the "BOOT MODE SEL" switches to "0110" and boot.
 
 ## Addtional
 >TODO (a hardware setup guide needed?)
+
+### BOOT MODE SEL (MSEL) switch
+
+```
+Boot from sdcard (SPI0): 1101
+
+Boot from onboard flash (QSPI0): 0110
+```
+
+>On [hifive-unmatched-schematics-v3.pdf](https://sifive.cdn.prismic.io/sifive/6a06d6c0-6e66-49b5-8e9e-e68ce76f4192_hifive-unmatched-schematics-v3.pdf), SD Card is connected to SPI0, but on [fu740-c000-manual-v1p6.pdf](https://sifive.cdn.prismic.io/sifive/1a82e600-1f93-4f41-b2d8-86ed8b16acba_fu740-c000-manual-v1p6.pdf), there is a table 19 where mentioned "QSPI2 SD Card", and it matched boot from sd card case. need more research?
 
 ### Partitions
 Rootfs: ext4, must have ```legacy_boot``` flag set for extlinux boot
