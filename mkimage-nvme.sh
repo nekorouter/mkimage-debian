@@ -23,7 +23,8 @@ mount "$1"2 "$chroot_target"
 # TODO: maybe use Multistrap?
 ###
 
-mmdebstrap --architectures=riscv64 --include="debian-ports-archive-keyring locales" sid "$chroot_target" "deb http://deb.debian.org/debian-ports sid main contrib non-free"
+#mmdebstrap --architectures=riscv64 --include="debian-ports-archive-keyring locales" sid "$chroot_target" "deb http://deb.debian.org/debian-ports sid main contrib non-free"
+mmdebstrap --architectures=riscv64 --include="debian-ports-archive-keyring ca-certificates locales" --aptopt='Acquire::Check-Valid-Until "false"' sid "$chroot_target" "deb https://snapshot.debian.org/archive/debian-ports/20221017T204716Z/ sid main contrib non-free"
 mkdir "$chroot_target"/boot/efi
 mount "$1"1 "$chroot_target"/boot/efi
 
@@ -62,7 +63,11 @@ chroot "$chroot_target" sh -c "u-boot-update"
 chroot "$chroot_target" sh -c "apt install -y bash-completion firmware-linux firmware-amd-graphics network-manager openssh-server"
 
 # add root password as root
-chroot "$chroot_target" sh -c "usermod --password $(openssl passwd -6 "root") root"
+#chroot "$chroot_target" sh -c "usermod --password $(openssl passwd -6 "root") root"
+
+# Add new user named "debian"
+chroot "$chroot_target" sh -c "useradd -m debian"
+chroot "$chroot_target" sh -c "echo 'debian:debian' | chpasswd"
 
 chroot "$chroot_target"
 
