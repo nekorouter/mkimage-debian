@@ -1,10 +1,11 @@
 #!/bin/bash
 
 CHROOT_TARGET=/tmp/mountpoint
-IMAGE_FILE=nvme.img
+IMAGE_FILE=sdcard.img
 
 # Create image file
-truncate -s 2G $IMAGE_FILE
+rm "$IMAGE_FILE"
+truncate -s 8G "$IMAGE_FILE"
 
 # Create a efi partition and a root partition
 sgdisk -og "$IMAGE_FILE"
@@ -31,8 +32,8 @@ mount "$LOOP_DEVICE"p2 "$CHROOT_TARGET"
 # TODO: maybe use Multistrap?
 ###
 
-#mmdebstrap --architectures=riscv64 --include="debian-ports-archive-keyring locales" sid "$CHROOT_TARGET" "deb http://deb.debian.org/debian-ports sid main contrib non-free"
-mmdebstrap --architectures=riscv64 --include="debian-ports-archive-keyring ca-certificates locales" --aptopt='Acquire::Check-Valid-Until "false"' sid "$CHROOT_TARGET" "deb https://snapshot.debian.org/archive/debian-ports/20221017T204716Z/ sid main contrib non-free"
+mmdebstrap --architectures=riscv64 --include="debian-ports-archive-keyring locales" sid "$CHROOT_TARGET" "deb http://deb.debian.org/debian-ports sid main contrib non-free"
+#mmdebstrap --architectures=riscv64 --include="debian-ports-archive-keyring ca-certificates locales" --aptopt='Acquire::Check-Valid-Until "false"' sid "$CHROOT_TARGET" "deb https://snapshot.debian.org/archive/debian-ports/20221017T204716Z/ sid main contrib non-free"
 mkdir "$CHROOT_TARGET"/boot/efi
 mount "$LOOP_DEVICE"p1 "$CHROOT_TARGET"/boot/efi
 
@@ -58,6 +59,7 @@ chroot "$CHROOT_TARGET" sh -c "apt install -y arch-install-scripts"
 
 # Change hostname
 chroot "$CHROOT_TARGET" sh -c "echo unmatched > /etc/hostname"
+# chroot "$CHROOT_TARGET" sh -c "echo unmatched > /etc/hosts"
 
 # Set up fstab
 chroot "$CHROOT_TARGET" sh -c "genfstab -U / > /etc/fstab"
@@ -81,6 +83,13 @@ chroot "$CHROOT_TARGET" sh -c "echo 'debian:debian' | chpasswd"
 chroot "$CHROOT_TARGET"
 
 echo "Finished, cleaning..."
-# umount -l "$CHROOT_TARGET"
-# losetup -d "$LOOP_DEVICE"
-# rm -r "$CHROOT_TARGET"
+umount -l "$CHROOT_TARGET"
+losetup -d "$LOOP_DEVICE"
+if [ "$(ls -A $CHROOT_TARGET)" ]; then
+    echo "folder not empty! umount may fail!"
+    exit 2
+else
+    echo "Deleting chroot temp folder..."
+    rmdir "$CHROOT_TARGET"
+    echo "Done."
+fi

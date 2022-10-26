@@ -23,8 +23,8 @@ mount "$1"2 "$chroot_target"
 # TODO: maybe use Multistrap?
 ###
 
-#mmdebstrap --architectures=riscv64 --include="debian-ports-archive-keyring locales" sid "$chroot_target" "deb http://deb.debian.org/debian-ports sid main contrib non-free"
-mmdebstrap --architectures=riscv64 --include="debian-ports-archive-keyring ca-certificates locales" --aptopt='Acquire::Check-Valid-Until "false"' sid "$chroot_target" "deb https://snapshot.debian.org/archive/debian-ports/20221017T204716Z/ sid main contrib non-free"
+mmdebstrap --architectures=riscv64 --include="debian-ports-archive-keyring locales" sid "$chroot_target" "deb http://deb.debian.org/debian-ports sid main contrib non-free"
+# mmdebstrap --architectures=riscv64 --include="debian-ports-archive-keyring ca-certificates locales" --aptopt='Acquire::Check-Valid-Until "false"' sid "$chroot_target" "deb https://snapshot.debian.org/archive/debian-ports/20221017T204716Z/ sid main contrib non-free"
 mkdir "$chroot_target"/boot/efi
 mount "$1"1 "$chroot_target"/boot/efi
 
@@ -64,6 +64,7 @@ chroot "$chroot_target" sh -c "apt install -y bash-completion firmware-linux fir
 
 # add root password as root
 #chroot "$chroot_target" sh -c "usermod --password $(openssl passwd -6 "root") root"
+chroot "$CHROOT_TARGET" sh -c "echo 'root:debian' | chpasswd"
 
 # Add new user named "debian"
 chroot "$chroot_target" sh -c "useradd -m debian"
@@ -73,5 +74,12 @@ chroot "$chroot_target"
 
 echo "Finished, cleaning..."
 umount -l "$chroot_target"
-rm -r "$chroot_target"
+if [ "$(ls -A $chroot_target)" ]; then
+    echo "folder not empty! umount may fail!"
+    exit 2
+else
+    echo "Deleting chroot temp folder..."
+    rmdir "$chroot_target"
+    echo "Done."
+fi
 sync
