@@ -53,8 +53,8 @@ chroot "$CHROOT_TARGET" sh -c "locale-gen"
 ###
 
 # Install kernel
-# cp linux-image-*.deb "$CHROOT_TARGET"/tmp
-# chroot "$CHROOT_TARGET" sh -c "apt install /tmp/*.deb"
+cp linux-image-*.deb "$CHROOT_TARGET"/tmp
+chroot "$CHROOT_TARGET" sh -c "apt install /tmp/*.deb"
 cp -v vmlinuz-* "$CHROOT_TARGET"/boot/
 cp -v config-* "$CHROOT_TARGET"/boot/
 # *** should make a "make-kernel.sh" for install kernel form source, because of need of uncompressed kernel ***
@@ -86,7 +86,7 @@ chroot "$CHROOT_TARGET" sh -c "apt install -y bash-completion network-manager op
 chroot "$CHROOT_TARGET" sh -c "echo 'root:debian' | chpasswd"
 
 # Add new user named "debian"
-chroot "$CHROOT_TARGET" sh -c "useradd -m debian -s bash"
+chroot "$CHROOT_TARGET" sh -c "useradd -m debian -s /bin/bash"
 chroot "$CHROOT_TARGET" sh -c "echo 'debian:debian' | chpasswd"
 
 # add grub efi and grub.cfg
