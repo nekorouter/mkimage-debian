@@ -98,6 +98,7 @@ clean_env()
 {
 	echo "Ctrl+C exit!!"
 	unmount_image
+	rm -v "$IMAGE_FILE"
 	exit
 }
 

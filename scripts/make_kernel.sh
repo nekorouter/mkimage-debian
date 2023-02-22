@@ -167,8 +167,8 @@ make_kernel_starfive_jh7110()
         #cp -v arch/riscv/boot/dts/starfive/jh7110-visionfive-v2.dtb ../rootfs/boot/dtbs/
         #cp -v .config ../rootfs/boot/latest-config
         make CROSS_COMPILE=riscv64-linux-gnu- ARCH=riscv INSTALL_PATH=../rootfs/boot dtbs_install
-        mv -v ../rootfs/boot/dtbs/$(ls ../rootfs/lib/modules/)/* ../rootfs/boot/dtbs/
-        rm -r ../rootfs/boot/dtbs/$(ls ../rootfs/lib/modules/)
+        #mv -v ../rootfs/boot/dtbs/$(ls ../rootfs/lib/modules/)/* ../rootfs/boot/dtbs/
+        #rm -r ../rootfs/boot/dtbs/$(ls ../rootfs/lib/modules/)
     popd
 }
 

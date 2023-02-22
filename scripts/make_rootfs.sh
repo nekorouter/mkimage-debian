@@ -25,9 +25,9 @@ make_rootfs()
 {
 	echo "Pull rootfs..."
 	
-	#mmdebstrap --architectures=riscv64 --include="debian-ports-archive-keyring ca-certificates locales" --aptopt='Acquire::Check-Valid-Until "false"' sid "$CHROOT_TARGET" "deb https://snapshot.debian.org/archive/debian-ports/20221225T084846Z/ sid main contrib non-free"
-    mmdebstrap --architectures=riscv64 --include="debian-ports-archive-keyring locales" sid "$CHROOT_TARGET" "deb http://ftp.ports.debian.org/debian-ports/ sid main contrib non-free"
-    
+	#mmdebstrap --architectures=riscv64 --include="debian-ports-archive-keyring ca-certificates locales dosfstools" --aptopt='Acquire::Check-Valid-Until "false"' sid "$CHROOT_TARGET" "deb https://snapshot.debian.org/archive/debian-ports/20221225T084846Z/ sid main contrib non-free"
+    mmdebstrap --architectures=riscv64 --include="debian-ports-archive-keyring locales dosfstools" sid "$CHROOT_TARGET" "deb http://ftp.ports.debian.org/debian-ports/ sid main contrib non-free"
+
     # echo "Install board specfied packages..."
     
 	case $MACHINE in

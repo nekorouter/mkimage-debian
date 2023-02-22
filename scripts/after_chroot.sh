@@ -48,8 +48,11 @@ after_chroot_starfive_jh7110()
 	BOOT_UUID=$(blkid -o value -s UUID "$LOOP_DEVICE"p2)
 	ROOT_UUID=$(blkid -o value -s UUID "$LOOP_DEVICE"p3)
 	chroot "$CHROOT_TARGET" sh -c "echo 'UUID=$EFI_UUID	/boot/efi	vfat	rw,relatime	0 2' >> /etc/fstab"
-	chroot "$CHROOT_TARGET" sh -c "echo 'UUID=$BOOT_UUID	/boot	ext4	rw,relatime	0 2' >> /etc/fstab"
+	chroot "$CHROOT_TARGET" sh -c "echo 'UUID=$BOOT_UUID	/boot	vfat	rw,relatime	0 2' >> /etc/fstab"
 	chroot "$CHROOT_TARGET" sh -c "echo 'UUID=$ROOT_UUID	/	ext4	rw,relatime	0 1' >> /etc/fstab"
+
+	# TODO: make sure root UUID is correct, but why it is wrong?
+	chroot "$CHROOT_TARGET" sh -c "u-boot-update"
 }
 
 after_chroot()

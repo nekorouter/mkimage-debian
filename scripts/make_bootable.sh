@@ -63,7 +63,7 @@ make_bootable_allwinner_d1()
 	chroot "$CHROOT_TARGET" sh -c "apt install -y u-boot-menu"
 	chroot "$CHROOT_TARGET" sh -c "echo 'U_BOOT_ROOT="root=/dev/mmcblk0p3"' | tee -a /etc/default/u-boot"
 	chroot "$CHROOT_TARGET" sh -c "echo 'U_BOOT_PARAMETERS=\"rw earlycon=sbi console=tty0 console=ttyS0,115200 rootwait \"' | tee -a /etc/default/u-boot"
-	chroot "$CHROOT_TARGET" sh -c "echo 'U_BOOT_FDT_DIR="/boot/dtbs/"' | tee -a /etc/default/u-boot"
+	chroot "$CHROOT_TARGET" sh -c "echo 'U_BOOT_FDT_DIR=\"/boot/dtbs/\"' | tee -a /etc/default/u-boot"
 	chroot "$CHROOT_TARGET" sh -c "u-boot-update"
 }
 
@@ -72,7 +72,8 @@ make_bootable_starfive_jh7110()
     chroot "$CHROOT_TARGET" sh -c "apt install -y u-boot-menu"
 	#chroot "$CHROOT_TARGET" sh -c "echo 'U_BOOT_ROOT="root=/dev/mmcblk1p3"' | tee -a /etc/default/u-boot"
     chroot "$CHROOT_TARGET" sh -c "echo 'U_BOOT_PARAMETERS=\"rw console=tty0 console=ttyS0,115200 earlycon rootwait stmmaceth=chain_mode:1 selinux=0\"' | tee -a /etc/default/u-boot"
-    chroot "$CHROOT_TARGET" sh -c "echo 'U_BOOT_FDT_DIR="/boot/dtbs"' | tee -a /etc/default/u-boot"
+    #chroot "$CHROOT_TARGET" sh -c "echo 'U_BOOT_FDT_DIR=\"/boot/dtbs\"' | tee -a /etc/default/u-boot"
+	chroot "$CHROOT_TARGET" sh -c "echo 'U_BOOT_FDT_DIR=\"/dtbs/\"' | tee -a /etc/default/u-boot"
     chroot "$CHROOT_TARGET" sh -c "u-boot-update"
 }
 

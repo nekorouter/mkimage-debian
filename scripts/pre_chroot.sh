@@ -38,7 +38,8 @@ pre_chroot_starfive_jh7110()
 	
 	# format partitions
 	mkfs.vfat -F32 -n efi "$LOOP_DEVICE"p1
-	mkfs.ext4 -F -L boot "$LOOP_DEVICE"p2
+	#mkfs.ext4 -F -L boot "$LOOP_DEVICE"p2
+	mkfs.vfat -F32 -n boot "$LOOP_DEVICE"p2
 	mkfs.ext4 -F -L root "$LOOP_DEVICE"p3
 	
 	mkdir "$CHROOT_TARGET"
