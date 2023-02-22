@@ -6,12 +6,12 @@ make_imagefile_sifive_unmatched()
     ENDSECTOR=$(sgdisk -E "$IMAGE_FILE")
 
     sgdisk -g --clear -a 1 \
-        --new=1:40:2087         --change-name=1:'SPL' --typecode=1:5B193300-FC78-40CD-8002-E86C45580B47 \
-        --new=2:2088:10279      --change-name=2:'UBOOT'  --typecode=2:2E54B353-1271-4842-806F-E436D6AF6985 \
-        --new=3:10280:10535     --change-name=3:'ENV'   --typecode=3:0FC63DAF-8483-4772-8E79-3D69D8477DE4 \
-        --new=4::+40M: --change-name=4:'EFI'   --typecode=1:ef00 \
-        --new=5::+500M: --change-name=5:'BOOT'   --typecode=1:ef00 \
-        --new=6::$ENDSECTOR: --change-name=6:'ROOT'   --typecode=2:8300 --attributes=2:set:2 \
+        --new=1:34:2081         --change-name=1:'SPL' --typecode=1:5B193300-FC78-40CD-8002-E86C45580B47 \
+        --new=2:2082:10273      --change-name=2:'UBOOT'  --typecode=2:2E54B353-1271-4842-806F-E436D6AF6985 \
+        --new=3:10274:10529     --change-name=3:'ENV'   --typecode=3:0FC63DAF-8483-4772-8E79-3D69D8477DE4 \
+        --new=4::+40M: --change-name=4:'EFI'   --typecode=4:ef00 \
+        --new=5::+500M: --change-name=5:'BOOT'   --typecode=5:ef00 \
+        --new=6::$ENDSECTOR: --change-name=6:'ROOT'   --typecode=6:8300 --attributes=2:set:2 \
         "$IMAGE_FILE"
     sgdisk -p "$IMAGE_FILE"
 }

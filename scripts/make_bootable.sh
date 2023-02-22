@@ -6,7 +6,7 @@ make_bootable_sifive_unmatched()
 {
     # Install kernel and bootloader infrastructure
     chroot "$CHROOT_TARGET" sh -c "apt install -y u-boot-menu u-boot-sifive"
-    chroot "$CHROOT_TARGET" sh -c "echo 'U_BOOT_ROOT="root=/dev/mmcblk0p6"' | tee -a /etc/default/u-boot"
+    #chroot "$CHROOT_TARGET" sh -c "echo 'U_BOOT_ROOT="root=/dev/mmcblk0p6"' | tee -a /etc/default/u-boot"
     chroot "$CHROOT_TARGET" sh -c "u-boot-update"
     
     ###
@@ -31,8 +31,8 @@ make_bootable_sifive_unmatched()
 	cp ${DIR}/spl/u-boot-spl.bin "${OUT_DIR}"
 	cp ${DIR}/u-boot.itb "${OUT_DIR}"
 	
-	dd if=u-boot-spl.bin of="$IMAGE_FILE" bs=512 seek=40 conv=sync,notrunc status=progress
-	dd if=u-boot.itb of="$IMAGE_FILE" bs=512 seek=2088 conv=sync,notrunc status=progress
+	dd if=u-boot-spl.bin of="$IMAGE_FILE" bs=512 seek=34 conv=sync,notrunc status=progress
+	dd if=u-boot.itb of="$IMAGE_FILE" bs=512 seek=2082 conv=sync,notrunc status=progress
 }
 
 make_bootable_allwinner_d1()

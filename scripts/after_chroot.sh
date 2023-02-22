@@ -3,7 +3,7 @@
 after_chroot_sifive_unmatched()
 {
 	# Install tools and drivers
-	chroot "$CHROOT_TARGET" sh -c "apt install -y bash-completion network-manager openssh-server"
+	chroot "$CHROOT_TARGET" sh -c "apt install -y sudo bash-completion network-manager openssh-server ntp"
 	
 	# Change hostname
 	chroot "$CHROOT_TARGET" sh -c "echo unmatched > /etc/hostname"
@@ -17,7 +17,7 @@ after_chroot_sifive_unmatched()
 after_chroot_allwinner_d1()
 {
 	# Install tools and drivers
-	chroot "$CHROOT_TARGET" sh -c "apt install -y bash-completion network-manager openssh-server"
+	chroot "$CHROOT_TARGET" sh -c "apt install -y sudo bash-completion network-manager openssh-server ntp"
 	
 	# Change hostname
 	chroot "$CHROOT_TARGET" sh -c "echo d1 > /etc/hostname"
@@ -37,7 +37,7 @@ after_chroot_allwinner_d1()
 after_chroot_starfive_jh7110()
 {
 	# Install tools and drivers
-	chroot "$CHROOT_TARGET" sh -c "apt install -y sudo bash-completion network-manager openssh-server"
+	chroot "$CHROOT_TARGET" sh -c "apt install -y sudo bash-completion network-manager openssh-server ntp"
 
 	# Change hostname
 	chroot "$CHROOT_TARGET" sh -c "echo jh7110 > /etc/hostname"
