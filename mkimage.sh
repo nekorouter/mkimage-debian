@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # Supported machine name:
 #	sifive_unmatched
@@ -11,7 +12,8 @@
 # d1: 
 # unmatched: redo partition for special uboot partition
 
-MACHINE=sifive_unmatched
+# MACHINE=sifive_unmatched
+machine_list=("sifive_unmatched" "allwinner_d1" "starfive_jh7110")
 BOARD=
 IMAGE_SIZE=4G
 IMAGE_FILE=""
@@ -89,7 +91,22 @@ source $(pwd)/scripts/pre_chroot.sh
 # Check root privileges:
 if (( $EUID != 0 )); then
     echo "Please run as root"
-    exit
+    exit 1
+fi
+
+if [ -z "$MACHINE" ]; then
+	echo "MACHINE not set!!"
+    exit 1
+else
+	# for $MACHINE in ${machine_list[@]}; do
+	# 	echo $MACHINE
+	# done
+	if [[ " ${machine_list[*]} " =~ " ${MACHINE} " ]]; then
+    	echo "MACHINE=$MACHINE"
+	else
+		echo "$MACHINE is not compatible with this script!!"
+		exit 1
+	fi
 fi
 
 # TODO: clean other things
