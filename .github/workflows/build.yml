@@ -23,11 +23,12 @@ jobs:
         machine: ['sifive_unmatched', 'allwinner_d1', 'starfive_jh7110']
 
     steps:
+    - name: checkout workdir
+      uses: actions/checkout@v3
+
     - name: build image
-      # uses: actions/checkout@main
       env:
         MACHINE: ${{ matrix.machine }}
       run: |
-          echo ./mkimage.sh
-          echo "test=$MACHINE"
+          sudo -E ./mkimage.sh
 
