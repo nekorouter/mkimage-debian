@@ -37,8 +37,12 @@ install_depends()
 unmount_image()
 {
 	echo "Finished and cleaning..."
-	umount -l "$CHROOT_TARGET"
-	losetup -d "$LOOP_DEVICE"
+	if mount | grep $CHROOT_TARGET > /dev/null; then
+		umount -l "$CHROOT_TARGET"
+	fi
+	if losetup -l | grep $LOOP_DEVICE > /dev/null; then
+		losetup -d "$LOOP_DEVICE"
+	fi
 	if [ "$(ls -A $CHROOT_TARGET)" ]; then
 		echo "folder not empty! umount may fail!"
 		exit 2
@@ -74,7 +78,7 @@ main()
 	make_bootable
 	after_chroot
 	# for debug:
-	chroot "$CHROOT_TARGET" bash
+	# chroot "$CHROOT_TARGET" bash
 	unmount_image
 	cleanup_env
 }
@@ -110,10 +114,10 @@ else
 fi
 
 # TODO: clean other things
-trap clean_env INT
+trap clean_env INT EXIT
 clean_env()
 {
-	echo "Ctrl+C exit!!"
+	echo "exit!!"
 	unmount_image
 	rm -v "$IMAGE_FILE"
 	exit
