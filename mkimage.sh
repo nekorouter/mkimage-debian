@@ -27,11 +27,13 @@ CHROOT_TARGET=rootfs
 
 install_depends()
 {
-	echo "TODO: check if depends has been installed"
+	# echo "TODO: check if depends has been installed"
 	#apt install -y mmdebstrap debian-ports-archive-keyring \
 	#	qemu binfmt-support qemu-user-static curl wget \
 	#	libncurses-dev gawk flex bison openssl libssl-dev device-tree-compiler \
 	#	swig 
+	sudo apt install -y git gdisk dosfstools mmdebstrap qemu-system-misc binfmt-support qemu-user-static debian-ports-archive-keyring \
+		wget make gcc flex bison gcc-riscv64-linux-gnu libssl-dev bc dpkg-dev rsync 
 }
 
 unmount_image()
