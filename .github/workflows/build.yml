@@ -26,6 +26,11 @@ jobs:
     - name: checkout workdir
       uses: actions/checkout@v3
 
+    - name: install latest debian-ports-archive-keyring
+      run: |
+          wget http://ftp.debian.org/debian/pool/main/d/debian-ports-archive-keyring/debian-ports-archive-keyring_2023.02.01_all.deb
+          sudo apt install ./debian-ports-archive-keyring_2023.02.01_all.deb
+
     - name: build image
       env:
         MACHINE: ${{ matrix.machine }}
