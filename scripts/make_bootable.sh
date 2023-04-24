@@ -75,6 +75,10 @@ make_bootable_starfive_jh7110()
     #chroot "$CHROOT_TARGET" sh -c "echo 'U_BOOT_FDT_DIR=\"/boot/dtbs\"' | tee -a /etc/default/u-boot"
 	chroot "$CHROOT_TARGET" sh -c "echo 'U_BOOT_FDT_DIR=\"/dtbs/\"' | tee -a /etc/default/u-boot"
     chroot "$CHROOT_TARGET" sh -c "u-boot-update"
+
+	# cp uEnv.txt to /boot/boot so u-boot could pick up correct dtb file
+	mkdir -v $CHROOT_TARGET/boot/boot
+	cp -v board/starfive_jh7110/visionfive-v2/uEnv.txt $CHROOT_TARGET/boot/boot
 }
 
 make_bootable()
