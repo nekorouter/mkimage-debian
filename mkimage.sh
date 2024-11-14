@@ -22,7 +22,7 @@ CHROOT_TARGET=rootfs
 
 install_depends()
 {
-	sudo apt install -y git gdisk dosfstools mmdebstrap qemu-system-misc binfmt-support qemu-user-static debian-ports-archive-keyring \
+	sudo apt install -y git gdisk dosfstools mmdebstrap qemu-system-misc binfmt-support qemu-user-static \
 		wget make gcc flex bison gcc-riscv64-linux-gnu libssl-dev bc dpkg-dev rsync 
 }
 

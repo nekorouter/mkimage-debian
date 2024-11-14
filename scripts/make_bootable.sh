@@ -10,9 +10,9 @@ make_bootable_sifive_unmatched()
     chroot "$CHROOT_TARGET" sh -c "u-boot-update"
     
     ###
-	opensbi_branch="v1.1"
+	opensbi_branch="v1.5.1"
 	opensbi_git="https://github.com/riscv-software-src/opensbi.git"
-	uboot_branch="v2023.01-rc1"
+	uboot_branch="v2024.10"
 	uboot_git="https://github.com/u-boot/u-boot.git"
 	uboot_config="sifive_unmatched_defconfig"
 	
@@ -22,6 +22,7 @@ make_bootable_sifive_unmatched()
 		make CROSS_COMPILE=riscv64-linux-gnu- PLATFORM=generic
 	popd
 	cp opensbi/build/platform/generic/firmware/fw_dynamic.bin ${OUT_DIR}
+	apt install -y libgnutls28-dev
 	DIR='u-boot'
 	git clone --depth=1 -b ${uboot_branch} ${uboot_git} ${DIR}
 	pushd ${DIR}

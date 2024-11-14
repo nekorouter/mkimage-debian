@@ -12,6 +12,9 @@ after_chroot_sifive_unmatched()
 	# Set up fstab
 	#chroot "$CHROOT_TARGET" sh -c "genfstab -U -p / | sed '/\//!d' > /etc/fstab"
 	chroot "$CHROOT_TARGET" sh -c "genfstab -U / > /etc/fstab"
+
+	# TODO: make sure root UUID is correct, but why it is wrong?
+	chroot "$CHROOT_TARGET" sh -c "u-boot-update"
 }
 
 after_chroot_allwinner_d1()

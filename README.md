@@ -3,8 +3,7 @@ Make a Debian image for (some) RISC-V boards
 
 ## Requirements
 ```bash
-apt install -y mmdebstrap debian-ports-archive-keyring \
-	qemu binfmt-support qemu-user-static curl wget \
+apt install -y mmdebstrap qemu binfmt-support qemu-user-static curl wget \
 	libncurses-dev gawk flex bison swig openssl libssl-dev device-tree-compiler \ 
 ```
 
